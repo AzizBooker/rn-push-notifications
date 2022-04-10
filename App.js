@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Button } from 'react-native';
 import * as Notifications from 'expo-notifications'
+import * as Permissions from 'expo-permissions'
 /*
 There are 2 types of notifications : local and push notifications
 
@@ -19,7 +21,22 @@ Push notifications:
 
 */
 
+Notifications.setNotificationHandler({
+  handleNotification:async ()=>{
+    return {
+        shouldShowAlert:true
+    }
+  }
+})
+
 export default function App() {
+
+  useEffect(() => {
+      Permissions.getAsync(Permissions.NOTIFICATIONS).then(status=>{
+        console.log(status)
+      })
+  }, [])
+  
 
   const triggerNotificationHandler=()=>{
       Notifications.scheduleNotificationAsync({
